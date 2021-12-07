@@ -1,0 +1,55 @@
+"""
+This module have some utils functions
+for use in the server.
+"""
+
+import sys
+sys.path.append('.')
+
+from models.File import File
+
+def get_files_paths(config_file) -> list:
+  """
+  Return a list with each line of
+  the file of configuration.
+  """
+
+  lines_files = []
+
+  # open for get the lines and return ir
+  with open(config_file, 'r') as f:
+    lines = f.readlines()
+
+    for line in lines:
+      lines_files.append(line.strip('\n'))
+
+  return lines_files
+
+
+def get_files_object(files:list) -> list:
+  """
+  Return a list of objects File.
+  """
+
+  new_list_files = []
+
+  # recorriendo for show it and return
+  for indx, file in enumerate(files, start = 0):
+    file_current = File(indx, file)
+    new_list_files.append(file_current)
+
+  return new_list_files
+
+
+def validate_config_file(config_file):
+  """
+  Return True if the config file is found.
+  """
+
+  # validating
+  try:
+    f = open(config_file, 'r')
+    return True
+
+  except FileNotFoundError:
+    return False
