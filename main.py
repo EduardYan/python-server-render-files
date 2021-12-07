@@ -3,7 +3,7 @@ This is the principal
 file for execute the server.
 """
 
-from flask import Flask, send_file, jsonify
+from flask import Flask, send_file, jsonify, request
 from optparse import OptionParser
 from helpers.utils import get_files_paths, get_files_object, validate_config_file
 from settings.port import PORT
@@ -37,20 +37,20 @@ if validate_config_file(config_file):
     app = Flask(__name__)
     print('\nServing Files ...')
 
-    @app.route('/')
+    @app.route('/', methods=['GET'])
     def principal():
         """
         This is for the principal route of the page.
         """
 
         return jsonify({
-            "currentFiles": [
-                [f.id for f in files],
-                [f.path for f in files]
-            ]
+            "currentFiles": {
+                "id": [f.id for f in files],
+                "paths": [f.path for f in files]
+            }
         })
 
-    @app.route('/get-file/<string:id>')
+    @app.route('/get-file/<string:id>', methods=['GET'])
     def get_file(id):
         """
         Return the file
@@ -79,7 +79,32 @@ if validate_config_file(config_file):
                 "response": "Id not found"
             })
 
+    @app.route('/update-path/<string:id>', methods = ['PUT'])
+    def update_path(id):
+        """
+        This is the route for update
+        a path in the file config.txt
+        """
 
+        id = int(id)
+
+        old_path = files[int(id)]
+        new_path = request.form['path']
+
+        with open('config.txt', 'r') as f:
+            f.  # go
+
+
+    @app.route('/test')
+    def test():
+        """
+        This is a route
+        for make test.
+        """
+        return 'testing'
+
+
+    # running the app
     app.run(host = '0.0.0.0', port = PORT, debug = True)
 
 else:
