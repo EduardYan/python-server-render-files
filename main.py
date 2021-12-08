@@ -1,14 +1,19 @@
 """
 This is the principal
 file for execute the server.
+
+You can put the paths of the files to render
+in a file for example config.txt or other. Yout must put of this form a for each line (without spaces in the end)):
+/home/youUser/hola.txt
+/home/Desktop/img.jpg
+
 """
 
 from flask import Flask, jsonify, request
+from helpers.utils import get_files_paths, get_files_object, validate_config_file, get_client
+from settings.port import PORT_DEFAULT
 from optparse import OptionParser
 
-from flask.helpers import send_file
-from helpers.utils import get_files_paths, get_files_object, validate_config_file
-from settings.port import PORT
 
 def get_options_config_file() -> tuple:
     """
@@ -18,9 +23,11 @@ def get_options_config_file() -> tuple:
 
     parser = OptionParser()
     parser.add_option('-f', '--file', dest = 'config_file', help = 'Put the config file with the paths of the files for render.')
+    parser.add_option('-p', '--port', dest = 'port', help = 'Put the port of the list the server.')
 
     options, args = parser.parse_args()
 
+    # validating in case not options passed
     if not options.config_file:
         parser.error('Put the config file to render. Help with --help')
 
@@ -75,6 +82,7 @@ if validate_config_file(config_file):
             # getting the lines and returning the information
             with open(file_to_render, 'r') as f:
                 lines = f.readlines()
+                print(f.encoding)
 
             return jsonify({
                 "id": id,
@@ -142,9 +150,52 @@ if validate_config_file(config_file):
 
         id = int(id)
 
-        return jsonify({
-            "message": f"Path number {id} upated",
-        })
+        # gettings the new files after the writing
+        files_paths = get_files_paths(options.config_file)
+        files = get_files_object(files_paths)
+
+        try:
+            # getting the new and old path of the config file
+            new_path = str(request.form['path'])
+            old_path = str(files[id].path)
+
+            #  reading and writing in the file
+            with open(config_file, 'r') as f:
+                lines = f.readlines()
+
+            with open(config_file, 'w') as f:
+                for line in lines:
+                    if line == old_path + '\n':
+                        f.write(new_path + '\n')
+
+                    else:
+                        f.write(line)
+
+                f.truncate() # reloading the file
+
+
+            # gettings the new files after the writing
+            new_files_paths = get_files_paths(options.config_file)
+            new_files = get_files_object(new_files_paths)
+
+            return jsonify({
+                "message": f"Path number {id} upated",
+                "fileUpdated": {
+                    "id": id,
+                    "oldPath": old_path,
+                    "newPath": new_path
+                },
+                "currentsFiles": {
+                    "id": [f.id for f in new_files],
+                    "path": [f.path for f in new_files]
+                }
+            })
+
+        # in case the request is invalid
+        except KeyError:
+            return jsonify({
+                "message": "The request data must be path=data. Put failded."
+            })
 
     @app.route('/delete-path/<string:id>', methods = ['DELETE'])
     def delete_path(id):
@@ -183,10 +234,18 @@ if validate_config_file(config_file):
         for make test.
         """
 
+        print(get_client(request))
+
         return 'testing'
 
-    # running the app
-    app.run(host = '0.0.0.0', port = PORT, debug = True)
+
+    PORT = options.port
+    if not PORT:
+        # running the app
+        app.run(host = '0.0.0.0', port = PORT_DEFAULT, debug = True)
+
+    else:
+        app.run(host = '0.0.0.0', port = PORT_DEFAULT, debug = True)
 
 else:
     print('\nPut a config file valid.')

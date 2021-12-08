@@ -1,4 +1,4 @@
-/home/dan/app.py
+/home/dan/.vimrc
 /home/dan/.tmux.conf
 /home/dan/organitation_disks.txt
-/home/dan/change_shell.txt
+/home/Desktop/change_keyboard
