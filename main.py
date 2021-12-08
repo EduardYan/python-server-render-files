@@ -37,9 +37,9 @@ if validate_config_file(config_file):
     app = Flask(__name__)
     print( f'\nServing {len(files)} Files from {config_file}... ' ) # showing a message
 
-    app.route('/', methods = ['GET'])
-    app.route('/home', methods = ['GET'])
-    def principal(self):
+    @app.route('/', methods = ['GET'])
+    @app.route('/home', methods = ['GET'])
+    def principal():
         """
         This is for the principal route of the page.
         """
@@ -98,14 +98,18 @@ if validate_config_file(config_file):
                 "response": "Id not found"
             })
 
-    @app.route('/add-path/<string:path>', methods = ['POST'])
-    def add_path(path):
+    @app.route('/add-path/', methods = ['POST'])
+    def add_path():
         """
         This is the route for add a path
         to file to configuration.
         """
 
-        return 'Adding'
+        path_to_add = request.form['path']
+
+        return jsonify({
+            "message": "Adding the path {path_to_add} to {config_file}"
+        })
 
     @app.route('/update-path/<string:id>', methods = ['PUT'])
     def update_path(id):
