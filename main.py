@@ -88,11 +88,11 @@ if validate_config_file(config_file):
 
         id = int(id)
 
-        old_path = files[int(id)]
+        old_path = files[int(id)].path
         new_path = request.form['path']
 
-        with open('config.txt', 'r') as f:
-            f.  # go
+        with open('config.txt', 'r+') as f:
+            f.readlines()
 
 
     @app.route('/test')
