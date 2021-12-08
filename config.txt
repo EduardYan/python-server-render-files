@@ -1,4 +1,3 @@
-/home/dan/.vimrc
 /home/dan/app.py
 /home/dan/.tmux.conf
 /home/dan/organitation_disks.txt

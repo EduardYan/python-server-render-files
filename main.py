@@ -74,6 +74,8 @@ if validate_config_file(config_file):
             with open(file_to_render, 'r') as f:
                 lines = f.readlines()
 
+            print(request.headers['host'])
+
             return jsonify({
                 "id": id,
                 "path": file_to_render,
