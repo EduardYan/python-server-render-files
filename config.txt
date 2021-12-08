@@ -1,3 +1,4 @@
 /home/dan/app.py
 /home/dan/.tmux.conf
 /home/dan/organitation_disks.txt
+/home/dan/change_shell.txt

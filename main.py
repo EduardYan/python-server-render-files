@@ -5,6 +5,8 @@ file for execute the server.
 
 from flask import Flask, jsonify, request
 from optparse import OptionParser
+
+from flask.helpers import send_file
 from helpers.utils import get_files_paths, get_files_object, validate_config_file
 from settings.port import PORT
 
@@ -48,7 +50,7 @@ if validate_config_file(config_file):
         files = get_files_object(files_paths)
 
         return jsonify({
-            "currentFiles": {
+            "currentsFiles": {
                 "id": [f.id for f in files],
                 "paths": [f.path for f in files]
             }
@@ -74,13 +76,12 @@ if validate_config_file(config_file):
             with open(file_to_render, 'r') as f:
                 lines = f.readlines()
 
-            print(request.headers['host'])
-
             return jsonify({
                 "id": id,
                 "path": file_to_render,
                 "content": lines
             })
+
 
         # in case the file not found
         except FileNotFoundError:
@@ -107,10 +108,29 @@ if validate_config_file(config_file):
         to file to configuration.
         """
 
+        # getting path to add at the the file config.txt
         path_to_add = request.form['path']
 
+        #  writing in the file
+        with open(config_file, 'r') as f:
+            lines = f.readlines()
+
+        with open(config_file, 'w') as f:
+            lines.append(path_to_add)
+
+            for line in lines:
+                f.write(line.strip('\n') + '\n')
+
+        # gettings the new files after the writing
+        files_paths = get_files_paths(options.config_file)
+        files = get_files_object(files_paths)
+
         return jsonify({
-            "message": "Adding the path {path_to_add} to {config_file}"
+            "message": f"Adding the path {path_to_add} to {config_file}",
+            "currentsFiles": {
+                "id": [f.id for f in files],
+                "paths": [f.path for f in files]
+            }
         })
 
     @app.route('/update-path/<string:id>', methods = ['PUT'])
