@@ -3,7 +3,7 @@ This is the principal
 file for execute the server.
 """
 
-from flask import Flask, send_file, jsonify, request
+from flask import Flask, jsonify, request
 from optparse import OptionParser
 from helpers.utils import get_files_paths, get_files_object, validate_config_file
 from settings.port import PORT
@@ -35,13 +35,17 @@ if validate_config_file(config_file):
 
     # starting the server
     app = Flask(__name__)
-    print('\nServing Files ...')
+    print( f'\nServing {len(files)} Files from {config_file}... ' ) # showing a message
 
-    @app.route('/', methods=['GET'])
-    def principal():
+    app.route('/', methods = ['GET'])
+    app.route('/home', methods = ['GET'])
+    def principal(self):
         """
         This is for the principal route of the page.
         """
+
+        files_paths = get_files_paths(options.config_file)
+        files = get_files_object(files_paths)
 
         return jsonify({
             "currentFiles": {
@@ -50,6 +54,7 @@ if validate_config_file(config_file):
             }
         })
 
+
     @app.route('/get-file/<string:id>', methods=['GET'])
     def get_file(id):
         """
@@ -57,11 +62,25 @@ if validate_config_file(config_file):
         segun the id passed for parameter
         """
 
+        files_paths = get_files_paths(options.config_file)
+        files = get_files_object(files_paths)
+
         try:
             # getting for return it
             file_to_render = files[int(id)].path
-            return send_file(file_to_render)
+            # return send_file(file_to_render)
 
+            # getting the lines and returning the information
+            with open(file_to_render, 'r') as f:
+                lines = f.readlines()
+
+            return jsonify({
+                "id": id,
+                "path": file_to_render,
+                "content": lines
+            })
+
+        # in case the file not found
         except FileNotFoundError:
             return jsonify({
                 "response": "The request is a file. Not found !!!"
@@ -79,6 +98,15 @@ if validate_config_file(config_file):
                 "response": "Id not found"
             })
 
+    @app.route('/add-path/<string:path>', methods = ['POST'])
+    def add_path(path):
+        """
+        This is the route for add a path
+        to file to configuration.
+        """
+
+        return 'Adding'
+
     @app.route('/update-path/<string:id>', methods = ['PUT'])
     def update_path(id):
         """
@@ -88,20 +116,39 @@ if validate_config_file(config_file):
 
         id = int(id)
 
-        old_path = files[int(id)].path
-        new_path = request.form['path']
+        return jsonify({
+            "message": f"Path number {id} upated",
+        })
 
+    @app.route('/delete-path/<string:id>', methods = ['DELETE'])
+    def delete_path(id):
+        """
+        This route is for delete a
+        path of the config file. For not 
+        render in the server.
+        """
+
+        id = int(id)
+        OLD_PATH = files[int(id)].path
+
+        # this is the code for delete of the file
         with open('config.txt', 'r+') as f:
-            d = f.readlines()
+            lines = f.readlines()
             f.seek(0)
-            for i in d:
-                if i != new_path:
-                    f.write(i)
+            for line in lines:
+                if line != OLD_PATH + '\n':
+                    f.write(line)
 
             f.truncate()
+            f.close()
 
-        return 'Updated'
-
+        return jsonify({
+            "message": f"Path number {id} deleted",
+            "fileDelete": {
+                "id": id,
+                "path": OLD_PATH
+            },
+        })
 
     @app.route('/test')
     def test():
@@ -109,8 +156,8 @@ if validate_config_file(config_file):
         This is a route
         for make test.
         """
-        return 'testing'
 
+        return 'testing'
 
     # running the app
     app.run(host = '0.0.0.0', port = PORT, debug = True)
