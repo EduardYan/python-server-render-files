@@ -119,6 +119,9 @@ if validate_config_file(config_file):
         to file to configuration.
         """
 
+        files_paths = get_files_paths(options.config_file)
+        files = get_files_object(files_paths)
+
         # getting path to add at the the file config.txt
         path_to_add = request.form['path']
 
@@ -153,13 +156,15 @@ if validate_config_file(config_file):
 
         id = int(id)
 
-<<<<<<< HEAD
+        # getting for get the old and new path
+        files_paths = get_files_paths(options.config_file)
+        files = get_files_object(files_paths)
+
         old_path = files[int(id)].path
         new_path = request.form['path']
 
         with open('config.txt', 'r+') as f:
             f.readlines()
-=======
         # gettings the new files after the writing
         files_paths = get_files_paths(options.config_file)
         files = get_files_object(files_paths)
@@ -228,7 +233,6 @@ if validate_config_file(config_file):
 
             f.truncate()
             f.close()
->>>>>>> securiry
 
         return jsonify({
             "message": f"Path number {id} deleted",
