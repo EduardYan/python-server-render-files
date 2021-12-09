@@ -3,16 +3,15 @@ This is the principal
 file for execute the server.
 
 You can put the paths of the files to render
-in a file for example config.txt or other. Yout must put of this form a for each line (without spaces in the end)):
+in a file for example config.txt or other. Yout must put of this form, a for each line (without spaces in the end)):
 /home/youUser/hola.txt
-/home/Desktop/img.jpg
+/home/youUser/Desktop/img.jpg
 
-With the option -p or --port, you can pass a number port for example 6000 (for default the port 4000):
+With the option -p or --port, you can pass a number port, for example 6000 (for default is the port 4000):
 python3 main.py -f config.txt -p 6000
 
 """
 
-from typing import Type
 from flask import Flask, jsonify, request, send_file
 from helpers.utils import get_files_paths, get_files_object, validate_config_file, get_client
 from settings.port import PORT_DEFAULT
@@ -170,16 +169,17 @@ if validate_config_file(config_file):
         files_paths = get_files_paths(options.config_file)
         files = get_files_object(files_paths)
 
-        old_path = files[int(id)].path
-        new_path = request.form['path']
-
-        with open('config.txt', 'r+') as f:
-            f.readlines()
-        # gettings the new files after the writing
-        files_paths = get_files_paths(options.config_file)
-        files = get_files_object(files_paths)
-
         try:
+            # getting the old and new paths
+            old_path = files[int(id)].path
+            new_path = request.form['path']
+
+            with open('config.txt', 'r+') as f:
+                f.readlines()
+            # gettings the new files after the writing
+            files_paths = get_files_paths(options.config_file)
+            files = get_files_object(files_paths)
+
             # getting the new and old path of the config file
             new_path = str(request.form['path'])
             old_path = str(files[id].path)
@@ -197,7 +197,6 @@ if validate_config_file(config_file):
                         f.write(line)
 
                 f.truncate() # reloading the file
-
 
             # gettings the new files after the writing
             new_files_paths = get_files_paths(options.config_file)
@@ -220,6 +219,12 @@ if validate_config_file(config_file):
         except KeyError:
             return jsonify({
                 "message": "The request data must be path=data. Put failded."
+            })
+
+        # in case the id of the request not found
+        except IndexError:
+            return jsonify({
+                "message": "Id not found"
             })
 
     @app.route('/delete-path/<string:id>', methods = ['DELETE'])
@@ -277,4 +282,4 @@ if validate_config_file(config_file):
         app.run(host = '0.0.0.0', port = PORT_DEFAULT, debug = True)
 
 else:
-    print('\nPut a config file valid.')
+    print('\nPut a config file valid. Seee --help.')

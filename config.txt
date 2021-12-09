@@ -1,1 +1,2 @@
-/home/dan/post.js
+/home/dan/oscar.txt
+/home/dan/oscar.txt
