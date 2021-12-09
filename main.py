@@ -7,8 +7,12 @@ in a file for example config.txt or other. Yout must put of this form a for each
 /home/youUser/hola.txt
 /home/Desktop/img.jpg
 
+With the option -p or --port, you can pass a number port for example 6000 (for default the port 4000):
+python3 main.py -f config.txt -p 6000
+
 """
 
+from typing import Type
 from flask import Flask, jsonify, request, send_file
 from helpers.utils import get_files_paths, get_files_object, validate_config_file, get_client
 from settings.port import PORT_DEFAULT
@@ -23,7 +27,7 @@ def get_options_config_file() -> tuple:
 
     parser = OptionParser()
     parser.add_option('-f', '--file', dest = 'config_file', help = 'Put the config file with the paths of the files for render.')
-    parser.add_option('-p', '--port', dest = 'port', help = 'Put the port of the list the server.')
+    parser.add_option('-p', '--port', dest = 'port', help = 'Put the port of the list the server. The port for default is 4000.')
 
     options, args = parser.parse_args()
 
@@ -253,14 +257,13 @@ if validate_config_file(config_file):
 
         return 'testing'
 
-
-    # getting and validating the port for runn the app
-    PORT = int(options.port)
-    if not PORT:
-        app.run(host = '0.0.0.0', port = PORT_DEFAULT, debug = True)
-
-    else:
+    try:
+        # getting and validating the port for runn the app
+        PORT = int(options.port)
         app.run(host = '0.0.0.0', port = PORT, debug = True)
+
+    except TypeError:
+        app.run(host = '0.0.0.0', port = PORT_DEFAULT, debug = True)
 
 else:
     print('\nPut a config file valid.')
