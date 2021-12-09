@@ -62,6 +62,16 @@ def get_client(request:str) -> str:
   that visit the server.
   """
 
-  ip_client = request.headers['host']
+  from re import search
+
+  ip_client = request.headers['host'] # getting the host
+  ip_client_search = search('..............', ip_client)
+
+  if ip_client_search.group(0):
+    # for see the info
+    # print(ip_client_search.group(0))
+    # print(type(ip_client_search.group(0)))
+    # print(len(ip_client_search.group(0)))
+    ip_client = ip_client_search.group(0)
 
   return ip_client
