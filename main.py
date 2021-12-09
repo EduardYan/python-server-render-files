@@ -126,30 +126,36 @@ if validate_config_file(config_file):
         files_paths = get_files_paths(options.config_file)
         files = get_files_object(files_paths)
 
-        # getting path to add at the the file config.txt
-        path_to_add = request.form['path']
+        try:
+            # getting path to add at the the file config.txt
+            path_to_add = request.form['path']
 
-        #  writing in the file
-        with open(config_file, 'r') as f:
-            lines = f.readlines()
+            #  writing in the file
+            with open(config_file, 'r') as f:
+                lines = f.readlines()
 
-        with open(config_file, 'w') as f:
-            lines.append(path_to_add)
+            with open(config_file, 'w') as f:
+                lines.append(path_to_add)
 
-            for line in lines:
-                f.write(line.strip('\n') + '\n')
+                for line in lines:
+                    f.write(line.strip('\n') + '\n')
 
-        # gettings the new files after the writing
-        files_paths = get_files_paths(options.config_file)
-        files = get_files_object(files_paths)
+            # gettings the new files after the writing
+            files_paths = get_files_paths(options.config_file)
+            files = get_files_object(files_paths)
 
-        return jsonify({
-            "message": f"Adding the path {path_to_add} to {config_file}",
-            "currentsFiles": {
-                "id": [f.id for f in files],
-                "paths": [f.path for f in files]
-            }
-        })
+            return jsonify({
+                "message": f"Adding the path {path_to_add} to {config_file}",
+                "currentsFiles": {
+                    "id": [f.id for f in files],
+                    "paths": [f.path for f in files]
+                }
+            })
+
+        except KeyError:
+            return jsonify({
+                "message": "The request is invalid, must be path=data. Post failded."
+            })
 
     @app.route('/update-path/<string:id>', methods = ['PUT'])
     def update_path(id):
@@ -236,7 +242,6 @@ if validate_config_file(config_file):
                     f.write(line)
 
             f.truncate()
-            f.close()
 
         return jsonify({
             "message": f"Path number {id} deleted",
