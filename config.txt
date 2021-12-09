@@ -1,5 +1,1 @@
-/home/dan/.tmux.conf
-/home/dan/organitation_disks.txt
-/home/dan/Pictures/foto.png
-/home/dan/data.txt
-/home/dan/test.py
+/home/dan/post.js

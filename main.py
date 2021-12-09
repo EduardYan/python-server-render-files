@@ -230,26 +230,32 @@ if validate_config_file(config_file):
         render in the server.
         """
 
-        id = int(id)
-        OLD_PATH = files[int(id)].path
+        try:
+            id = int(id)
+            OLD_PATH = files[int(id)].path
 
-        # this is the code for delete of the file
-        with open('config.txt', 'r+') as f:
-            lines = f.readlines()
-            f.seek(0)
-            for line in lines:
-                if line != OLD_PATH + '\n':
-                    f.write(line)
+            # this is the code for delete of the file
+            with open('config.txt', 'r+') as f:
+                lines = f.readlines()
+                f.seek(0)
+                for line in lines:
+                    if line != OLD_PATH + '\n':
+                        f.write(line)
 
-            f.truncate()
+                f.truncate()
 
-        return jsonify({
-            "message": f"Path number {id} deleted",
-            "fileDelete": {
-                "id": id,
-                "path": OLD_PATH
-            },
-        })
+            return jsonify({
+                "message": f"Path number {id} deleted",
+                "fileDelete": {
+                    "id": id,
+                    "path": OLD_PATH
+                }
+            })
+
+        except IndexError:
+            return jsonify({
+                "message": "The request is a file. Not found in the server !!"
+            })
 
     @app.route('/test')
     def test():
