@@ -9,7 +9,7 @@ in a file for example config.txt or other. Yout must put of this form a for each
 
 """
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from helpers.utils import get_files_paths, get_files_object, validate_config_file, get_client
 from settings.port import PORT_DEFAULT
 from optparse import OptionParser
@@ -80,16 +80,19 @@ if validate_config_file(config_file):
             # return send_file(file_to_render)
 
             # getting the lines and returning the information
-            with open(file_to_render, 'r') as f:
-                lines = f.readlines()
-                print(f.encoding)
+            try:
+                with open(file_to_render, 'r') as f:
+                    lines = f.readlines()
 
-            return jsonify({
-                "id": id,
-                "path": file_to_render,
-                "content": lines
-            })
+                return jsonify({
+                    "id": id,
+                    "path": file_to_render,
+                    "content": lines
+                })
 
+            # in case the request of the file be a fhoto or other.
+            except UnicodeDecodeError:
+                return send_file(file_to_render) # sending the file
 
         # in case the file not found
         except FileNotFoundError:
@@ -239,9 +242,9 @@ if validate_config_file(config_file):
         return 'testing'
 
 
-    PORT = options.port
+    # getting and validating the port for runn the app
+    PORT = int(options.port)
     if not PORT:
-        # running the app
         app.run(host = '0.0.0.0', port = PORT_DEFAULT, debug = True)
 
     else:
