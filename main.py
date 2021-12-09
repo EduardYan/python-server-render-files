@@ -245,7 +245,7 @@ if validate_config_file(config_file):
         app.run(host = '0.0.0.0', port = PORT_DEFAULT, debug = True)
 
     else:
-        app.run(host = '0.0.0.0', port = PORT_DEFAULT, debug = True)
+        app.run(host = '0.0.0.0', port = PORT, debug = True)
 
 else:
     print('\nPut a config file valid.')
