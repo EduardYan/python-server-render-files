@@ -53,3 +53,14 @@ def validate_config_file(config_file):
 
   except FileNotFoundError:
     return False
+
+
+def get_client(request):
+  """
+  Return the ip of the client
+  that visit the server.
+  """
+
+  ip_client = request.headers['host']
+
+  return ip_client
