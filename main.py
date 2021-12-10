@@ -10,7 +10,9 @@ in a file for example config.txt or other. Yout must put of this form, a for eac
 With the option -p or --port, you can pass a number port, for example 6000 (for default is the port 4000):
 python3 main.py -f config.txt -p 6000
 
-In allas the routes validate the client ip.
+In alls the routes validate the client ip. If the ip of the client
+not is permitied in the file ./settings/ip_allows.py. The client not can
+recived the information.
 
 """
 
@@ -65,6 +67,10 @@ if validate_config_file(config_file):
         client = Client(ip_client)
         isValid = client.validate_client()
 
+        if not isValid:
+            return jsonify({
+                "message": "Your machine not is permitied for this server :("
+            })
 
         files_paths = get_files_paths(options.config_file)
         files = get_files_object(files_paths)
@@ -83,6 +89,16 @@ if validate_config_file(config_file):
         Return the file
         segun the id passed for parameter
         """
+
+        ip_client = get_ip_client(request)
+
+        client = Client(ip_client)
+        isValid = client.validate_client()
+
+        if not isValid:
+            return jsonify({
+                "message": "Your machine not is permitied for this server :("
+            })
 
         files_paths = get_files_paths(options.config_file)
         files = get_files_object(files_paths)
@@ -132,6 +148,16 @@ if validate_config_file(config_file):
         to file to configuration.
         """
 
+        ip_client = get_ip_client(request)
+
+        client = Client(ip_client)
+        isValid = client.validate_client()
+
+        if not isValid:
+            return jsonify({
+                "message": "Your machine not is permitied for this server :("
+            })
+
         files_paths = get_files_paths(options.config_file)
         files = get_files_object(files_paths)
 
@@ -172,6 +198,16 @@ if validate_config_file(config_file):
         This is the route for update
         a path in the file config.txt
         """
+
+        ip_client = get_ip_client(request)
+
+        client = Client(ip_client)
+        isValid = client.validate_client()
+
+        if not isValid:
+            return jsonify({
+                "message": "Your machine not is permitied for this server :("
+            })
 
         id = int(id)
 
@@ -245,6 +281,16 @@ if validate_config_file(config_file):
         render in the server.
         """
 
+        ip_client = get_ip_client(request)
+
+        client = Client(ip_client)
+        isValid = client.validate_client()
+
+        if not isValid:
+            return jsonify({
+                "message": "Your machine not is permitied for this server :("
+            })
+
         try:
             id = int(id)
             OLD_PATH = files[int(id)].path
@@ -271,23 +317,6 @@ if validate_config_file(config_file):
             return jsonify({
                 "message": "The request is a file. Not found in the server !!"
             })
-
-    @app.route('/test')
-    def test():
-        """
-        This is a route
-        for make test.
-        """
-
-        ip_client = get_ip_client(request)
-
-        client = Client(ip_client)
-        isValid = client.validate_client()
-
-        return jsonify({
-            "isValid": isValid
-        })
-
 
     try:
         # getting and validating the port for runn the app

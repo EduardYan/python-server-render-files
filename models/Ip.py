@@ -37,7 +37,7 @@ class Ip:
     block_3 = int(self.content.split('.')[2])
     block_4 = int(self.content.split('.')[3])
 
-    # blocks_list = [block_1, block_2, block_3, block_4]
+    self.blocks_list = [block_1, block_2, block_3, block_4]
 
     # validating for return
     if block_number == 1:
@@ -48,6 +48,13 @@ class Ip:
       return block_3
     if block_number == 4:
       return block_4
+
+  def get_all_blocks(self):
+    """"
+    Return all the blocks of the ip created.
+    """
+
+    return self.blocks_list
 
   def __str__(self) -> str:
       return f'This is a ip with a length of {self.len}.'
