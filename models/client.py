@@ -8,7 +8,7 @@ from typing import Type
 sys.path.append('.')
 
 from settings.ips_allows import IP_ALLOWS
-from models.Ip import Ip
+from models.ip import Ip
 
 class Client:
   """

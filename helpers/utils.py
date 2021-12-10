@@ -6,8 +6,8 @@ for use in the server.
 import sys
 sys.path.append('.')
 
-from models.File import File
-from models.Client import Client
+from models.file import File
+from models.client import Client
 
 def get_files_paths(config_file) -> list:
   """
