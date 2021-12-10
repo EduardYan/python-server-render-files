@@ -57,7 +57,7 @@ def validate_config_file(config_file) -> bool:
     return False
 
 
-def get_client(request:str) -> str:
+def get_ip_client(request:str) -> str:
   """
   Return the ip of the client
   that visit the server.

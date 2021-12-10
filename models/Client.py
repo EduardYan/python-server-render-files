@@ -4,17 +4,28 @@ for model a client of the server.
 """
 
 import sys
+from typing import Type
 sys.path.append('.')
 
 from settings.ips_allows import IP_ALLOWS
+from models.Ip import Ip
 
 class Client:
   """
   Create a client with a ip address.
   """
 
-  def __init__(self, ipAddress) -> None:
-      # initial value
+  bits_limits = 12
+
+  def __init__(self, ipAddress:str) -> None:
+      # validating the ip for raise a exception
+      if type(ipAddress) not in [str]:
+        raise TypeError(f'The ip {ipAddress} passed for parameter must be a string. Not a -- {type(ipAddress)} --')
+
+      if len(ipAddress.split('.')) > self.bits_limits:
+        raise TypeError(f'The ip length {ipAddress} passed for parameter is mayor to 12. Must be 8 bits for each block.')
+
+      # initial value for the Client object
       self.ipAddress = ipAddress
 
   def validate_client(self) -> bool:
@@ -22,31 +33,20 @@ class Client:
     Return True if the ip
     of the client created is in the range
     of the ips allows.
+
     """
 
-    ip_one = ''
-    ip_two = ''
-    ranges_ips = []
+    first_ip = Ip(IP_ALLOWS[0])
+    second_ip = Ip(IP_ALLOWS[1])
+    first_last_block = first_ip.get_block(4)
+    second_last_block = second_ip.get_block(4)
 
-    import re
+    range_ips = [ip for ip in range(first_last_block, second_last_block + 1)]
 
-    first_ip = IP_ALLOWS[0]
-    ip_search = re.search('$', first_ip)
+    if int(self.ipAddress.split('.')[3]) in range_ips:
+      return True
 
-    for c in IP_ALLOWS[1]:
-      if c != '.':
-        ip_two += c
-
-    return ip_search.group(0)
-
-    # for ip in (range(int(ip_one), int(ip_two))):
-    #   ranges_ips.append(str(ip))
-
-
-    # if self.ipAddress in ranges_ips:
-    #   return True
-
-    # return False
+    return False
 
 
   def __str__(self) -> str:

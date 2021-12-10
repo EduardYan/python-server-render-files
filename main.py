@@ -10,10 +10,12 @@ in a file for example config.txt or other. Yout must put of this form, a for eac
 With the option -p or --port, you can pass a number port, for example 6000 (for default is the port 4000):
 python3 main.py -f config.txt -p 6000
 
+In allas the routes validate the client ip.
+
 """
 
 from flask import Flask, jsonify, request, send_file
-from helpers.utils import get_files_paths, get_files_object, validate_config_file, get_client
+from helpers.utils import get_files_paths, get_files_object, validate_config_file, get_ip_client
 from models.Client import Client
 from settings.port import PORT_DEFAULT
 from optparse import OptionParser
@@ -56,6 +58,13 @@ if validate_config_file(config_file):
         """
         This is for the principal route of the page.
         """
+
+        # validating the ip
+        ip_client = get_ip_client(request)
+
+        client = Client(ip_client)
+        isValid = client.validate_client()
+
 
         files_paths = get_files_paths(options.config_file)
         files = get_files_object(files_paths)
@@ -270,7 +279,7 @@ if validate_config_file(config_file):
         for make test.
         """
 
-        ip_client = get_client(request)
+        ip_client = get_ip_client(request)
 
         client = Client(ip_client)
         isValid = client.validate_client()
