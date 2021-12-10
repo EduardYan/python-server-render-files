@@ -7,6 +7,7 @@ import sys
 sys.path.append('.')
 
 from models.File import File
+from models.Client import Client
 
 def get_files_paths(config_file) -> list:
   """
@@ -62,16 +63,6 @@ def get_client(request:str) -> str:
   that visit the server.
   """
 
-  from re import search
-
-  ip_client = request.headers['host'] # getting the host
-  ip_client_search = search('..............', ip_client)
-
-  if ip_client_search.group(0):
-    # for see the info
-    # print(ip_client_search.group(0))
-    # print(type(ip_client_search.group(0)))
-    # print(len(ip_client_search.group(0)))
-    ip_client = ip_client_search.group(0)
+  ip_client = str(request.environ['REMOTE_ADDR']) # getting the host
 
   return ip_client

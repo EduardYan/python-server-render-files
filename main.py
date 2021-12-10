@@ -14,6 +14,7 @@ python3 main.py -f config.txt -p 6000
 
 from flask import Flask, jsonify, request, send_file
 from helpers.utils import get_files_paths, get_files_object, validate_config_file, get_client
+from models.Client import Client
 from settings.port import PORT_DEFAULT
 from optparse import OptionParser
 
@@ -269,9 +270,15 @@ if validate_config_file(config_file):
         for make test.
         """
 
-        print(get_client(request))
+        ip_client = get_client(request)
 
-        return 'testing'
+        client = Client(ip_client)
+        isValid = client.validate_client()
+
+        return jsonify({
+            "isValid": isValid
+        })
+
 
     try:
         # getting and validating the port for runn the app
