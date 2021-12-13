@@ -1,3 +1,4 @@
 /home/dan/.tmux.conf
 /home/dan/.vimrc
 /home/dan/Pictures/foto.png
+/home/dan/Pictures/code.png
