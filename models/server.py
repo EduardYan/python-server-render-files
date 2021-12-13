@@ -303,7 +303,7 @@ class Server:
 
                 return jsonify({
                     "message": f"Path number {id} deleted",
-                    "fileDelete": {
+                    "fileDeleted": {
                         "id": id,
                         "path": OLD_PATH
                     }
