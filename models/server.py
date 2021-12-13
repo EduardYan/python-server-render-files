@@ -97,14 +97,23 @@ class Server:
 
                 # in case the request of the file be a fhoto or other.
                 except UnicodeDecodeError:
-                    with open(file_to_render, 'br') as f:
+                    lines = ''
+                    with open(file_to_render, 'rb') as f:
                         lines = f.readlines()
+
+                    # return jsonify({
+                    #     "id": id,
+                    #     "path": file_to_render,
+                    #     "content-image": content
+                    #     }) # sending the file
 
                     return jsonify({
                         "id": id,
                         "path": file_to_render,
-                        "content-image": str(lines)
+                        "content": [str(line) for line in lines]
                         }) # sending the file
+
+                    # return send_file(file_to_render) # this is form is discart
 
             # in case the file not found
             except FileNotFoundError:
