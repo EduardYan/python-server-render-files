@@ -1,0 +1,4 @@
+/home/dan/Pictures/myFiles.png
+/home/dan/Pictures/foto.png
+/home/dan/Pictures/code.png
+/home/dan/deploy
