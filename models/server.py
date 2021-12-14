@@ -74,10 +74,19 @@ class Server:
             segun the id passed for parameter
             """
 
+            # validating the ip
             ip_client = get_ip_client(request)
 
             client = Client(ip_client)
-            isValid = client.validate_client()
+
+            # validating the method for validate the client ip
+            if self.options.validate_for_ip_list:
+                file_with_ips = self.options.validate_for_ip_list
+                ip_list = client.get_list_ips(file_with_ips)
+                isValid = client.validate_client_for_list(ip_list) # for validate with the list
+
+            else:
+                isValid = client.validate_client_for_range() # for validate with the range
 
             if not isValid: # validating if the client is allow
                 return jsonify({
@@ -148,10 +157,19 @@ class Server:
             to file to configuration.
             """
 
+            # validating the ip
             ip_client = get_ip_client(request)
 
             client = Client(ip_client)
-            isValid = client.validate_client()
+
+            # validating the method for validate the client ip
+            if self.options.validate_for_ip_list:
+                file_with_ips = self.options.validate_for_ip_list
+                ip_list = client.get_list_ips(file_with_ips)
+                isValid = client.validate_client_for_list(ip_list) # for validate with the list
+
+            else:
+                isValid = client.validate_client_for_range() # for validate with the range
 
             if not isValid:
                 return jsonify({
@@ -199,10 +217,19 @@ class Server:
             a path in the file config.txt
             """
 
+            # validating the ip
             ip_client = get_ip_client(request)
 
             client = Client(ip_client)
-            isValid = client.validate_client()
+
+            # validating the method for validate the client ip
+            if self.options.validate_for_ip_list:
+                file_with_ips = self.options.validate_for_ip_list
+                ip_list = client.get_list_ips(file_with_ips)
+                isValid = client.validate_client_for_list(ip_list) # for validate with the list
+
+            else:
+                isValid = client.validate_client_for_range() # for validate with the range
 
             if not isValid:
                 return jsonify({
@@ -281,10 +308,19 @@ class Server:
             render in the server.
             """
 
+            # validating the ip
             ip_client = get_ip_client(request)
 
             client = Client(ip_client)
-            isValid = client.validate_client()
+
+            # validating the method for validate the client ip
+            if self.options.validate_for_ip_list:
+                file_with_ips = self.options.validate_for_ip_list
+                ip_list = client.get_list_ips(file_with_ips)
+                isValid = client.validate_client_for_list(ip_list) # for validate with the list
+
+            else:
+                isValid = client.validate_client_for_range() # for validate with the range
 
             if not isValid:
                 return jsonify({

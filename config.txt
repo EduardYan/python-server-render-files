@@ -1,2 +1,0 @@
-/home/dan/.tmux.conf
-/home/dan/Pictures/code.png

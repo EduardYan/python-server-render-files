@@ -8,7 +8,8 @@ in a file for example config.txt or other. Yout must put of this form, a for eac
 /home/youUser/Desktop/img.jpg
 
 With the option -p or --port, you can pass a number port, for example 6000 (for default is the port 4000):
-python3 main.py -f config.txt -p 6000
+Sample: python3 main.py -f config.txt -p 6000
+(You can change the port for default in ./settings/port.py)
 
 You can choice the method for validate the ip of the client.
 
@@ -27,5 +28,6 @@ must put the first ip of the range, and the second ip of the range.
 from models.server import Server
 
 if __name__ == '__main__':
+    # creating and starting the server
     filesServer = Server('files-server')
     filesServer.start()
