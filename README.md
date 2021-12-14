@@ -12,7 +12,7 @@ $ python3 install -r requirements.txt
 ```
 
 ## Run and Use.
-__For run the server, we must pass diferent options. Example:__
+__For run the server, we must pass diferent options. The server have the host 0.0.0.0 (We can have access from whatever device in our local network). Example:__
 
 In this case we are running our server with the option -f __(Put the file with the path of the files to render in the server)__ and -p __(Put the port of the server).__
 
