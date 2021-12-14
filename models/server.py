@@ -11,8 +11,8 @@ from optparse import OptionParser
 
 class Server:
   """
-  Create a server with a name
-  and a port.
+  Create a server with a name, for render
+  content of files.
   """
 
   def __init__(self, nameServer:str):
@@ -41,9 +41,17 @@ class Server:
             ip_client = get_ip_client(request)
 
             client = Client(ip_client)
-            isValid = client.validate_client()
 
-            if not isValid:
+            # validating the method for validate the client ip
+            if self.options.validate_for_ip_list:
+                file_with_ips = self.options.validate_for_ip_list
+                ip_list = client.get_list_ips(file_with_ips)
+                isValid = client.validate_client_for_list(ip_list) # for validate with the list
+
+            else:
+                isValid = client.validate_client_for_range() # for validate with the range
+
+            if not isValid: # validating if is valid
                 return jsonify({
                     "message": "Your machine not is permitied for this server :("
                 })
@@ -71,7 +79,7 @@ class Server:
             client = Client(ip_client)
             isValid = client.validate_client()
 
-            if not isValid:
+            if not isValid: # validating if the client is allow
                 return jsonify({
                     "message": "Your machine not is permitied for this server :("
                 })
@@ -340,6 +348,7 @@ class Server:
       parser = OptionParser()
       parser.add_option('-f', '--file', dest = 'config_file', help = 'Put the config file with the paths of the files for render.')
       parser.add_option('-p', '--port', dest = 'port', help = 'Put the port of the list the server. The port for default is 4000.')
+      parser.add_option('-i', '--ips', dest = 'validate_for_ip_list', help = 'Put the file with the ips allows in the server. Each ip of the file, line for line, without spaces.')
 
       options, args = parser.parse_args()
 

@@ -10,9 +10,17 @@ in a file for example config.txt or other. Yout must put of this form, a for eac
 With the option -p or --port, you can pass a number port, for example 6000 (for default is the port 4000):
 python3 main.py -f config.txt -p 6000
 
-In alls the routes validate the client ip. If the ip of the client
-not is permitied in the file ./settings/ip_allows.py. The client not can
-recived the information.
+You can choice the method for validate the ip of the client.
+
+In alls the routes validate the client ip. if the ip of the client not is valid, with the method of the
+list or range, not can recived the information.
+
+With the option -i or --ips, you can choice the file, where is the ips allows in the server.
+If the option -i or --ips, not is pass. For default the method for validate the ip of the client
+is range.
+
+If your choice the method for range, you must edit the list in this file: ./settings/ip_allows.py,
+must put the first ip of the range, and the second ip of the range.
 
 """
 
