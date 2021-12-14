@@ -1,18 +1,24 @@
 # Python Server Files.
 
-__This is a small server maked with python3 and flask, you can use this server for send files, images png or jpg. Or whatever format,  etc.__
+__This is a small server maked with python3 and flask, you can use this server for send files, images png or jpg. Or whatever other format,  etc.__
 
-__The server have 5 routes for use GET, GET-FILE, POST, PUT, DELETE.__
+__The server have 5 routes for use:__
+* __/ or /home__   (This route have the method GET)
+* __/get-file__    (This route have the method GET)
+* __/add-path__    (This route have the method POST)
+* __/update-path__  (This route have the method PUT)
+* __/delete-path__   (This route have the method DELETE)
+
 
 ## Dependecies.
 __You can install the dependencies with the requirements file, in this proyect. But this proyect only depend of flask module. Executing:__
 
 ```bash
-$ python3 install -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 
 ## Run and Use.
-__For run the server, we must pass diferent options. The server have the host 0.0.0.0 (We can have access from whatever device in our local network). Example:__
+__For run the server, we must pass diferent options. The server have the host 0.0.0.0 (We can have access him from whatever device in our local network). Example:__
 
 In this case we are running our server with the option -f __(Put the file with the path of the files to render in the server)__ and -p __(Put the port of the server).__
 
@@ -119,3 +125,7 @@ __Also we can make that form with other routes *get-file* . Example:__
 __See these outputs is complicated. I created a client, for this server. You can use that client for save the content of the json object, in files. Also you can make request GET, GET-FILE, POST, PUT, DELETE. This is the link for the client.__
 
 [https://github.com/EduardYan/python-client-render-files](https://github.com/EduardYan/python-client-render-files)
+
+
+## Errors or Bugs.
+Send me a email to eduarygp@gmail.com
