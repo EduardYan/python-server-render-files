@@ -1,4 +1,4 @@
-/home/dan/Pictures/myFiles.png
-/home/dan/Pictures/foto.png
-/home/dan/Pictures/code.png
-/home/dan/deploy
+/home/dan/.vimrc
+/home/dan/app.js
+/home/dan/Pictures/red-bird.png
+/home/dan/Pictures/cactus.jpg

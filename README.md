@@ -10,6 +10,7 @@ __The server have 5 routes for use:__
 * __/delete-path__   (This route have the method DELETE)
 
 
+-------------------------------------------------------------------
 ## Dependecies.
 __You can install the dependencies with the requirements file, in this proyect. But this proyect only depend of flask module. Executing:__
 
@@ -17,6 +18,7 @@ __You can install the dependencies with the requirements file, in this proyect. 
 $ pip3 install -r requirements.txt
 ```
 
+--------------------------------------------------------------------
 ## Run and Use.
 __For run the server, we must pass diferent options. The server have the host 0.0.0.0 (We can have access him from whatever device in our local network). Example:__
 
@@ -33,11 +35,11 @@ __You can see alls the options with more documentation.  Executing:__
 $ python3 main.py --help
 ```
 
-1. __-f__  (With this option, we put the file that have the path of the files to render)
+1. __-f__ or __--file__  (With this option, we put the file that have the path of the files to render)
 
-2. __-p__ (With this option, we put the port where we want that listen the server. The server for default use the port number 4000)
+2. __-p__ or __--port__ (With this option, we put the port where we want that listen the server. The server for default use the port number 4000)
 
-3. __-i__ (With this option, we put the file with the ips, that we want allow in the server, for validate the ips of the clients)
+3. __-i__ or __--ips__(With this option, we put the file with the ips, that we want allow in the server, for validate the ips of the clients)
 
 ### File with the paths.
 __We must put the file with the paths with the option -f. This file must be of this form:__
@@ -120,12 +122,13 @@ __Also we can make that form with other routes *get-file* . Example:__
 
 ![](./doc/example-results-get-file.png)
 
+--------------------------------------------------
 ## Client.
 
 __See these outputs is complicated. I created a client, for this server. You can use that client for save the content of the json object, in files. Also you can make request GET, GET-FILE, POST, PUT, DELETE. This is the link for the client.__
 
 [https://github.com/EduardYan/python-client-render-files](https://github.com/EduardYan/python-client-render-files)
 
-
+---------------------------------------------------------
 ## Errors or Bugs.
 Send me a email to eduarygp@gmail.com
